@@ -31,7 +31,7 @@ const Signup = async (req, res) => {
     } else {
       const hashPassword = await bcrypt.hash(password, 10);
 
-      await userModel.create({
+    const user =   await userModel.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -40,7 +40,7 @@ const Signup = async (req, res) => {
       });
       return res
         .status(200)
-        .json({ status: true, message: "SignUp successfully" });
+        .json({ status: true, userId:user._id, message: "SignUp successfully" });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -78,7 +78,7 @@ const Signin = async (req, res) => {
         });
       return res
         .status(200)
-        .json({ status: true, message: "Signin successfully" });
+        .json({ status: true, userId:findUser._id,  message: "Signin successfully" });
     } else {
       return res.status(400).json({
         status: false,
