@@ -69,7 +69,7 @@ const Signin = async (req, res) => {
 
     const findUser = await userModel.findOne({ email: email });
 
-    console.log("findUser", findUser);
+  
 
     if (findUser) {
       const matchPassowrd = await bcrypt.compare(password, findUser.password);
@@ -178,7 +178,7 @@ const update = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(req.params.id);
+
 
     const user = await userModel.findById(id);
     if (!user)
