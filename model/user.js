@@ -26,6 +26,41 @@ const userSchema = mongoose.Schema({
     required: true,
   },
 
+  aboutme: {
+    type: String,
+    required: false,
+  },
+
+  linkedin: {
+    type: String,
+    required: false,
+  },
+
+  github: {
+    type: String,
+    required: false,
+  },
+
+  facebook: {
+    type: String,
+    required: false,
+  },
+
+  twitter: {
+    type: String,
+    required: false,
+  },
+
+  instagram: {
+    type: String,
+    required: false,
+  },
+
+  website: {
+    type: String,
+    required: false,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
