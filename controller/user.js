@@ -31,16 +31,18 @@ const Signup = async (req, res) => {
     } else {
       const hashPassword = await bcrypt.hash(password, 10);
 
-    const user =   await userModel.create({
+      const user = await userModel.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: hashPassword,
         phoneNumber: phoneNumber,
       });
-      return res
-        .status(200)
-        .json({ status: true, userId:user._id, message: "SignUp successfully" });
+      return res.status(200).json({
+        status: true,
+        userId: user._id,
+        message: "SignUp successfully",
+      });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -76,9 +78,11 @@ const Signin = async (req, res) => {
           status: false,
           message: "Please enter correct email or password",
         });
-      return res
-        .status(200)
-        .json({ status: true, userId:findUser._id,  message: "Signin successfully" });
+      return res.status(200).json({
+        status: true,
+        userId: findUser._id,
+        message: "Signin successfully",
+      });
     } else {
       return res.status(400).json({
         status: false,
@@ -95,6 +99,10 @@ const update = async (req, res) => {
   try {
     const {
       id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
       aboutme,
       linkedin,
       facebook,
@@ -104,28 +112,63 @@ const update = async (req, res) => {
       website,
     } = req.body;
 
-    console.log("twitter", twitter)
+    const schema = Joi.object({
+      email: Joi.string().email(),
+      password: Joi.string(),
+      firstName: Joi.string(),
+     
 
+      aboutme: Joi.string(),
+      linkedin: Joi.string(),
+      facebook: Joi.string(),
+      twitter: Joi.string(),
+      github: Joi.string(),
+      instagram: Joi.string(),
+      website: Joi.string(),
+    });
+    const { error } = schema.validate({
+      email: email,
+      
+      firstName: firstName,
+     
+      aboutme: aboutme,
+      linkedin: linkedin,
+      facebook: facebook,
+      twitter: twitter,
+      github: github,
+      instagram: instagram,
+      website: website,
+    });
+
+    if (error)
+      return res
+        .status(400)
+        .json({ status: false, message: error.details[0].message });
     const updateUser = await userModel.findById({ _id: id });
-    console.log(updateUser)
-  
+
     if (!updateUser)
       return res.status(404).json({ status: false, message: "User not found" });
 
     await updateUser.updateOne({
-      aboutme : aboutme,
-      linkedin : linkedin,
-      facebook : facebook,
-      twitter : twitter,
-      github : github,
-      instagram : instagram,
-      website : website,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+
+      aboutme: aboutme,
+      linkedin: linkedin,
+      facebook: facebook,
+      twitter: twitter,
+      github: github,
+      instagram: instagram,
+      website: website,
     });
 
-    return res.status(200).json({ status:true, message:"updated successfully"})
-
+    return res
+      .status(200)
+      .json({ status: true, message: "updated successfully" });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res
       .status(500)
       .json({ status: false, message: "Something went wrong" });
@@ -147,4 +190,4 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = { Signup, Signin, getUser , update };
+module.exports = { Signup, Signin, getUser, update };
