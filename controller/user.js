@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const userModel = require("../model/user");
+const Profile = require("../model/userDetails");
 const bcrypt = require("bcrypt");
 
 const Signup = async (req, res) => {
@@ -93,4 +94,49 @@ const Signin = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { Signup, Signin };
+
+const ProfileDetails = async(req, res) =>{
+  try{
+
+    const { id , linkedine, github, facebook, instagram , website} = req.body;
+
+    // const user = await Profile.findByById({id : id});
+
+    // if(!user) return res.status(404).json({status: false, message: "User not found"});
+
+    const update =  Profile.create({
+        linkedine : linkedine,
+        github : github,
+        facebook : facebook,
+        instagram : instagram,
+        website : website
+      })
+
+      return res.status(200).json({status: true, message: "user update successful"});
+
+    
+  }
+  catch(err){
+    console.log(err);
+  res.status(500).json({ status:"false" ,message: "Something went wrong" });
+
+  }
+}
+
+
+const getUser = async (req, res) => {
+  try{
+
+    const id = req.params.id;
+    console.log(req.params.id)
+    
+    const user = await userModel.findById(id)
+    if(!user) return res.status(404).json({status: false, message: "user Not Found"})
+    
+    return res.status(200).json({status: true, message:user})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+module.exports = { Signup, Signin  , ProfileDetails , getUser};
