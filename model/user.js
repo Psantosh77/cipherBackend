@@ -1,4 +1,4 @@
-const  mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
   firstName: {
@@ -13,9 +13,9 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  phoneNumber:{
-    type:Number,
-    required:false,
+  phoneNumber: {
+    type: Number,
+    required: false,
   },
   isEmailVerified: {
     type: Boolean,
@@ -61,6 +61,18 @@ const userSchema = mongoose.Schema({
     required: false,
   },
 
+  highestEducation: {
+    type: String,
+    enum: ["Graduation", "Post Graduation", "Higher Education", "Secondary"],
+    default: "Graduation",
+  },
+
+  currentlyDo: {
+    type: String,
+    enum: ["Freelancing", "Job", "Teaching", "Collage Student", "Schooling"],
+    default: "Collage Student",
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -68,4 +80,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-module.exports =  mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);

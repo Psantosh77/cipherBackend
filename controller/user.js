@@ -110,6 +110,8 @@ const update = async (req, res) => {
       github,
       instagram,
       website,
+      highestEducation,
+      correntlyDo,
     } = req.body;
 
     const schema = Joi.object({
@@ -125,6 +127,10 @@ const update = async (req, res) => {
       github: Joi.string(),
       instagram: Joi.string(),
       website: Joi.string(),
+
+
+      highestEducation: Joi.string(),
+      correntlyDo:Joi.string(),
     });
     const { error } = schema.validate({
       email: email,
@@ -138,6 +144,8 @@ const update = async (req, res) => {
       github: github,
       instagram: instagram,
       website: website,
+      highestEducation:highestEducation,
+      correntlyDo: correntlyDo,
     });
 
     if (error)
@@ -162,6 +170,8 @@ const update = async (req, res) => {
       github: github,
       instagram: instagram,
       website: website,
+      highestEducation: highestEducation,
+      correntlyDo: correntlyDo,
     });
 
     return res
@@ -178,8 +188,6 @@ const update = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const id = req.params.id;
-
-
     const user = await userModel.findById(id);
     if (!user)
       return res.status(404).json({ status: false, message: "user Not Found" });
